@@ -17,6 +17,24 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+// Ruta raíz informativa
+app.get('/', (req, res) => {
+  res.status(200).json({
+    mensaje: 'API Cabina - Centro Cultural',
+    estado: 'Servidor y Base de Datos en operacion',
+    entorno: process.env.NODE_ENV || 'development',
+    endpoints: {
+      salud: '/api/health',
+      salas: '/api/rooms',
+      bandas: '/api/bands',
+      musicos: '/api/musicians',
+      equipo: '/api/equipment',
+      reservas: '/api/bookings',
+      prestamos: '/api/loans'
+    }
+  });
+});
+
 // Ruta de comprobación de salud del servicio
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'API Cabina operando correctamente' });
