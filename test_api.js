@@ -303,6 +303,54 @@ async function runTests() {
     console.assert(resValidPagination.status === 200 && resValidPagination.body.page === 1, 'Error en paginación');
     console.log('[OK] Paginación y ordenamiento descendente validados con éxito');
 
+    // 12. Pruebas de Blindaje de Casos Borde
+    console.log('\n12. Pruebas de Blindaje de Casos Borde');
+
+    // 12.1 Body vacío en POST (debe dar 400, no 500)
+    const resEmptyBody = await request('/api/rooms', {
+      method: 'POST',
+      body: JSON.stringify({})
+    });
+    console.assert(resEmptyBody.status === 400, `Se esperaba 400 con body vacío, obtuvo ${resEmptyBody.status}`);
+    console.log('[OK] 400 validado con body vacío');
+
+    // 12.2 Parámetro sort duplicado (debe dar 400, no 500)
+    const resDupSort = await request('/api/rooms?sort=name&sort=capacity');
+    console.assert(resDupSort.status === 400, `Se esperaba 400 con sort duplicado, obtuvo ${resDupSort.status}`);
+    console.log('[OK] 400 validado con sort duplicado');
+
+    // 12.3 Búsqueda con caracteres especiales regex (no debe dar 500)
+    const resSpecialSearch = await request('/api/rooms?search=(test[');
+    console.assert(resSpecialSearch.status === 200, `Se esperaba 200 con regex especial escapado, obtuvo ${resSpecialSearch.status}`);
+    console.log('[OK] 200 con caracteres especiales en búsqueda escapados');
+
+    // 12.4 Fecha inexistente en calendario (ej. 2026-02-31 o 2026-13-45)
+    const resInvalidCalendarDate = await request('/api/bookings', {
+      method: 'POST',
+      body: JSON.stringify({
+        room: roomId,
+        band: bandId,
+        date: '2026-02-31',
+        startHour: 10,
+        endHour: 12
+      })
+    });
+    console.assert(resInvalidCalendarDate.status === 400, `Se esperaba 400 por fecha inexistente en calendario, obtuvo ${resInvalidCalendarDate.status}`);
+    console.log('[OK] 400 fecha inexistente en calendario validado');
+
+    // 12.5 Músico con dominio de correo moderno (.info / .cr)
+    const resMusicianInfo = await request('/api/musicians', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: 'Músico Dominio Largo',
+        instrument: 'Violín',
+        email: 'violinista@orquesta.info',
+        band: bandId
+      })
+    });
+    console.assert(resMusicianInfo.status === 201, `Se esperaba 201 con email de dominio .info, obtuvo ${resMusicianInfo.status}`);
+    console.log('[OK] 201 con email de dominio largo (.info) creado exitosamente');
+
     console.log('\n======================================================');
     console.log('       ¡TODAS LAS PRUEBAS PASARON EXITOSAMENTE!');
     console.log('======================================================\n');

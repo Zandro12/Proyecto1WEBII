@@ -36,7 +36,30 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // 2. Validar fecha (hoy o posterior)
+  // 2. Validar formato estricto y fecha válida en el calendario
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    const error = new Error('El formato de fecha debe ser YYYY-MM-DD');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const [yearStr, monthStr, dayStr] = date.split('-');
+  const y = parseInt(yearStr, 10);
+  const m = parseInt(monthStr, 10);
+  const d = parseInt(dayStr, 10);
+  const calDate = new Date(Date.UTC(y, m - 1, d));
+
+  if (
+    calDate.getUTCFullYear() !== y ||
+    calDate.getUTCMonth() !== m - 1 ||
+    calDate.getUTCDate() !== d
+  ) {
+    const error = new Error('La fecha proporcionada no es una fecha válida en el calendario');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Validar fecha (hoy o posterior)
   const todayStr = getTodayString();
   if (date < todayStr) {
     const error = new Error('La fecha debe ser hoy o un día posterior');

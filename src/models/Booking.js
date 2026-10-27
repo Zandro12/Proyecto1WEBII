@@ -15,7 +15,15 @@ const bookingSchema = new mongoose.Schema(
     date: {
       type: String,
       required: [true, 'La fecha de la reserva es obligatoria'],
-      match: [/^\d{4}-\d{2}-\d{2}$/, 'El formato de fecha debe ser YYYY-MM-DD']
+      validate: {
+        validator: function (v) {
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+          const [y, m, d] = v.split('-').map(Number);
+          const dt = new Date(Date.UTC(y, m - 1, d));
+          return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d;
+        },
+        message: 'La fecha debe tener formato YYYY-MM-DD y ser una fecha válida en el calendario'
+      }
     },
     startHour: {
       type: Number,

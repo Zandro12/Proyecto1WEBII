@@ -17,6 +17,19 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+// Garantizar que req.body siempre sea un objeto y validar body en POST y PUT
+app.use((req, res, next) => {
+  req.body = req.body || {};
+
+  if (['POST', 'PUT'].includes(req.method) && req.path.startsWith('/api/')) {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: 'El cuerpo de la petición (body) es obligatorio y no puede estar vacío' });
+    }
+  }
+
+  next();
+});
+
 // Ruta raíz informativa
 app.get('/', (req, res) => {
   res.status(200).json({

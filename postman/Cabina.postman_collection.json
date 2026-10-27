@@ -41,6 +41,23 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData._id) {",
+                  "    pm.environment.set('roomId', jsonData._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Crear Sala - Ejemplo (201)",
@@ -85,23 +102,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f2029c\",\n  \"name\": \"Sala Principal Apolo\",\n  \"capacity\": 10,\n  \"floor\": 1,\n  \"hasDrumKit\": true,\n  \"status\": \"disponible\",\n  \"createdAt\": \"2026-11-01T10:00:00.000Z\",\n  \"updatedAt\": \"2026-11-01T10:00:00.000Z\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 201', function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData._id) {",
-                  "    pm.environment.set('roomId', jsonData._id);",
-                  "}"
-                ]
-              }
-            }
           ]
         },
         {
@@ -127,6 +127,19 @@
             },
             "description": "Lista las salas con paginación y ordenamiento por defecto. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Listar Salas - Ejemplo (200)",
@@ -162,19 +175,6 @@
               ],
               "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029c\",\n      \"name\": \"Sala Principal Apolo\",\n      \"capacity\": 10,\n      \"floor\": 1,\n      \"hasDrumKit\": true,\n      \"status\": \"disponible\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -201,6 +201,19 @@
             },
             "description": "Retorna el detalle de la sala especificada. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Obtener Sala por ID - Ejemplo (200)",
@@ -237,19 +250,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f2029c\",\n  \"name\": \"Sala Principal Apolo\",\n  \"capacity\": 10,\n  \"floor\": 1,\n  \"hasDrumKit\": true,\n  \"status\": \"disponible\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -285,6 +285,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Actualizar Sala - Ejemplo (200)",
@@ -330,19 +343,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f2029c\",\n  \"name\": \"Sala Principal Apolo Actualizada\",\n  \"capacity\": 12,\n  \"floor\": 1,\n  \"hasDrumKit\": true,\n  \"status\": \"disponible\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -376,6 +376,19 @@
             },
             "description": "Devuelve las reservas de ese día ordenadas por startHour con la banda poblada. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Horario de la Sala (Schedule) - Ejemplo (200)",
@@ -419,19 +432,6 @@
               ],
               "body": "{\n  \"room\": {\n    \"_id\": \"6add372290b84b5694f2029c\",\n    \"name\": \"Sala Principal Apolo Actualizada\",\n    \"capacity\": 12,\n    \"floor\": 1,\n    \"status\": \"disponible\"\n  },\n  \"date\": \"2026-11-15\",\n  \"bookings\": []\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -458,6 +458,19 @@
             },
             "description": "Devuelve por cada sala cuántas reservas activas (apartadas o confirmadas) tiene. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Estadísticas de Salas - Ejemplo (200)",
@@ -493,19 +506,6 @@
                 }
               ],
               "body": "[\n  {\n    \"_id\": \"6add372290b84b5694f2029c\",\n    \"name\": \"Sala Principal Apolo Actualizada\",\n    \"capacity\": 12,\n    \"floor\": 1,\n    \"status\": \"disponible\",\n    \"activeBookingsCount\": 0\n  }\n]"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
             }
           ]
         }
@@ -546,6 +546,23 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData._id) {",
+                  "    pm.environment.set('bandId', jsonData._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Crear Banda - Ejemplo (201)",
@@ -590,23 +607,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f2029e\",\n  \"name\": \"Los Ecos del Barrio\",\n  \"genre\": \"rock\",\n  \"active\": true,\n  \"contactName\": \"Roberto Gómez\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 201', function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData._id) {",
-                  "    pm.environment.set('bandId', jsonData._id);",
-                  "}"
-                ]
-              }
-            }
           ]
         },
         {
@@ -632,6 +632,19 @@
             },
             "description": "Lista las bandas con paginación. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Listar Bandas - Ejemplo (200)",
@@ -667,19 +680,6 @@
               ],
               "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029e\",\n      \"name\": \"Los Ecos del Barrio\",\n      \"genre\": \"rock\",\n      \"active\": true,\n      \"contactName\": \"Roberto Gómez\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -706,6 +706,19 @@
             },
             "description": "Obtiene el detalle de la banda con sus músicos poblados con populate. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Obtener Banda por ID - Ejemplo (200)",
@@ -742,19 +755,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f2029e\",\n  \"name\": \"Los Ecos del Barrio\",\n  \"genre\": \"rock\",\n  \"active\": true,\n  \"contactName\": \"Roberto Gómez\",\n  \"musicians\": []\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -790,6 +790,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Actualizar Banda - Ejemplo (200)",
@@ -835,19 +848,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f2029e\",\n  \"name\": \"Los Ecos del Barrio Oficial\",\n  \"genre\": \"rock\",\n  \"active\": true,\n  \"contactName\": \"Roberto Gómez Bolaños\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -875,6 +875,19 @@
             },
             "description": "Devuelve el listado de músicos asociados a esta banda. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Músicos de la Banda - Ejemplo (200)",
@@ -912,19 +925,6 @@
               ],
               "body": "[]"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -952,6 +952,19 @@
             },
             "description": "Devuelve las reservas de la banda con la sala poblada. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Reservas de la Banda - Ejemplo (200)",
@@ -988,19 +1001,6 @@
                 }
               ],
               "body": "[]"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
             }
           ]
         }
@@ -1041,6 +1041,23 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData._id) {",
+                  "    pm.environment.set('musicianId', jsonData._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Crear Músico - Ejemplo (201)",
@@ -1085,23 +1102,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f202a0\",\n  \"name\": \"Federico Baterista\",\n  \"instrument\": \"Batería\",\n  \"email\": \"federico@ecos.com\",\n  \"band\": \"6add372290b84b5694f2029e\",\n  \"active\": true\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 201', function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData._id) {",
-                  "    pm.environment.set('musicianId', jsonData._id);",
-                  "}"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1137,6 +1137,19 @@
             },
             "description": "Lista músicos con filtrado por banda y estado activo. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Listar Músicos (Filtros band y active) - Ejemplo (200)",
@@ -1182,19 +1195,6 @@
               ],
               "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a0\",\n      \"name\": \"Federico Baterista\",\n      \"instrument\": \"Batería\",\n      \"email\": \"federico@ecos.com\",\n      \"active\": true\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1221,6 +1221,19 @@
             },
             "description": "Detalle del músico mostrando su banda. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Obtener Músico por ID - Ejemplo (200)",
@@ -1257,19 +1270,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f202a0\",\n  \"name\": \"Federico Baterista\",\n  \"instrument\": \"Batería\",\n  \"email\": \"federico@ecos.com\",\n  \"band\": {\n    \"_id\": \"6add372290b84b5694f2029e\",\n    \"name\": \"Los Ecos del Barrio Oficial\",\n    \"genre\": \"rock\"\n  },\n  \"active\": true\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1305,6 +1305,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Actualizar Músico - Ejemplo (200)",
@@ -1350,19 +1363,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f202a0\",\n  \"name\": \"Federico Percusionista\",\n  \"instrument\": \"Batería y Percusión Menor\",\n  \"email\": \"federico@ecos.com\",\n  \"band\": \"6add372290b84b5694f2029e\",\n  \"active\": true\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         }
       ]
@@ -1402,6 +1402,23 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData._id) {",
+                  "    pm.environment.set('equipmentId', jsonData._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Crear Equipo - Ejemplo (201)",
@@ -1446,23 +1463,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f202a2\",\n  \"name\": \"Amplificador Marshall 50W\",\n  \"category\": \"cuerdas\",\n  \"totalUnits\": 4,\n  \"availableUnits\": 4\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 201', function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData._id) {",
-                  "    pm.environment.set('equipmentId', jsonData._id);",
-                  "}"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1498,6 +1498,19 @@
             },
             "description": "Lista el inventario de equipo disponible. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Listar Equipo (Filtros category y available) - Ejemplo (200)",
@@ -1543,19 +1556,6 @@
               ],
               "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a2\",\n      \"name\": \"Amplificador Marshall 50W\",\n      \"category\": \"cuerdas\",\n      \"totalUnits\": 4,\n      \"availableUnits\": 4\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1582,6 +1582,19 @@
             },
             "description": "Detalle de un equipo de inventario. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Obtener Equipo por ID - Ejemplo (200)",
@@ -1618,19 +1631,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f202a2\",\n  \"name\": \"Amplificador Marshall 50W\",\n  \"category\": \"cuerdas\",\n  \"totalUnits\": 4,\n  \"availableUnits\": 4\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1666,6 +1666,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Actualizar Equipo - Ejemplo (200)",
@@ -1711,19 +1724,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372290b84b5694f202a2\",\n  \"name\": \"Amplificador Marshall Valve 50W\",\n  \"category\": \"cuerdas\",\n  \"totalUnits\": 6,\n  \"availableUnits\": 6\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1750,6 +1750,19 @@
             },
             "description": "Devuelve por categoría las unidades totales y disponibles usando Aggregate. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Estadísticas de Equipo - Ejemplo (200)",
@@ -1785,19 +1798,6 @@
                 }
               ],
               "body": "[\n  {\n    \"category\": \"cuerdas\",\n    \"totalUnits\": 6,\n    \"availableUnits\": 6,\n    \"borrowedUnits\": 0,\n    \"equipmentCount\": 1\n  }\n]"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
             }
           ]
         }
@@ -1838,6 +1838,26 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData._id) {",
+                  "    pm.environment.set('bookingId', jsonData._id);",
+                  "}",
+                  "if (jsonData.loans && jsonData.loans.length > 0) {",
+                  "    pm.environment.set('loanId', jsonData.loans[0]._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Crear Reserva con Préstamo (Transacción) - Ejemplo (201)",
@@ -1882,26 +1902,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372390b84b5694f202a3\",\n  \"room\": \"6add372290b84b5694f2029c\",\n  \"band\": \"6add372290b84b5694f2029e\",\n  \"date\": \"2026-11-15\",\n  \"startHour\": 15,\n  \"endHour\": 17,\n  \"durationHours\": 2,\n  \"status\": \"apartada\",\n  \"notes\": \"Ensayo previo a presentación\",\n  \"loans\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"booking\": \"6add372390b84b5694f202a3\",\n      \"equipment\": \"6add372290b84b5694f202a2\",\n      \"units\": 2,\n      \"status\": \"prestado\"\n    }\n  ]\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 201', function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData._id) {",
-                  "    pm.environment.set('bookingId', jsonData._id);",
-                  "}",
-                  "if (jsonData.loans && jsonData.loans.length > 0) {",
-                  "    pm.environment.set('loanId', jsonData.loans[0]._id);",
-                  "}"
-                ]
-              }
-            }
           ]
         },
         {
@@ -1937,6 +1937,19 @@
             },
             "description": "Lista reservas con filtros aplicados. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Listar Reservas (Filtros status, room, band) - Ejemplo (200)",
@@ -1982,19 +1995,6 @@
               ],
               "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a3\",\n      \"date\": \"2026-11-15\",\n      \"startHour\": 15,\n      \"endHour\": 17,\n      \"durationHours\": 2,\n      \"status\": \"apartada\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -2021,6 +2021,19 @@
             },
             "description": "Detalle completo con sala, banda con músicos activos y préstamos con equipo. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Obtener Reserva por ID - Ejemplo (200)",
@@ -2057,19 +2070,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372390b84b5694f202a3\",\n  \"room\": {\n    \"_id\": \"6add372290b84b5694f2029c\",\n    \"name\": \"Sala Principal Apolo Actualizada\",\n    \"capacity\": 12,\n    \"status\": \"disponible\"\n  },\n  \"band\": {\n    \"_id\": \"6add372290b84b5694f2029e\",\n    \"name\": \"Los Ecos del Barrio Oficial\",\n    \"genre\": \"rock\",\n    \"activeMusicians\": [\n      {\n        \"name\": \"Federico Percusionista\",\n        \"instrument\": \"Batería y Percusión Menor\",\n        \"email\": \"federico@ecos.com\"\n      }\n    ]\n  },\n  \"loans\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"units\": 2,\n      \"status\": \"prestado\",\n      \"equipment\": {\n        \"_id\": \"6add372290b84b5694f202a2\",\n        \"name\": \"Amplificador Marshall Valve 50W\",\n        \"category\": \"cuerdas\"\n      }\n    }\n  ],\n  \"date\": \"2026-11-15\",\n  \"startHour\": 15,\n  \"endHour\": 17,\n  \"durationHours\": 2,\n  \"status\": \"apartada\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -2105,6 +2105,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Actualizar Reserva (Confirmar) - Ejemplo (200)",
@@ -2150,19 +2163,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372390b84b5694f202a3\",\n  \"status\": \"confirmada\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -2189,6 +2189,19 @@
             },
             "description": "Cuenta reservas agrupadas por estado con Aggregate. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Estadísticas de Reservas - Ejemplo (200)",
@@ -2225,19 +2238,6 @@
               ],
               "body": "[\n  {\n    \"status\": \"confirmada\",\n    \"count\": 1\n  }\n]"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -2263,6 +2263,19 @@
             },
             "description": "Lista préstamos con reservas y equipos poblados. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Listar Préstamos - Ejemplo (200)",
@@ -2298,19 +2311,6 @@
               ],
               "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"booking\": \"6add372390b84b5694f202a3\",\n      \"equipment\": \"6add372290b84b5694f202a2\",\n      \"units\": 2,\n      \"status\": \"prestado\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -2337,6 +2337,19 @@
             },
             "description": "Detalle del préstamo con su reserva y equipo poblados. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Obtener Préstamo por ID - Ejemplo (200)",
@@ -2373,19 +2386,6 @@
               ],
               "body": "{\n  \"_id\": \"6add372390b84b5694f202a4\",\n  \"units\": 2,\n  \"status\": \"prestado\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -2413,6 +2413,21 @@
             },
             "description": "Cancela la reserva, marca préstamos como devuelto y reintegra el inventario con $inc. Status esperado: 200 OK."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "pm.expect(jsonData.booking.status).to.eql('cancelada');"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Cancelar Reserva (Transacción) - Ejemplo (200)",
@@ -2449,21 +2464,6 @@
                 }
               ],
               "body": "{\n  \"message\": \"Reserva cancelada y equipos devueltos al inventario con éxito\",\n  \"booking\": {\n    \"_id\": \"6add372390b84b5694f202a3\",\n    \"status\": \"cancelada\"\n  },\n  \"loans\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"units\": 2,\n      \"status\": \"devuelto\"\n    }\n  ]\n}"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 200', function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "pm.expect(jsonData.booking.status).to.eql('cancelada');"
-                ]
-              }
             }
           ]
         }
@@ -2505,7 +2505,68 @@
             },
             "description": "Listado de salas en página 1 con limit=2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Salas - Página 1 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms?page=1&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de salas en página 1 con limit=2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029c\",\n      \"name\": \"Sala Principal Apolo\",\n      \"capacity\": 10,\n      \"floor\": 1,\n      \"status\": \"disponible\"\n    },\n    {\n      \"_id\": \"6add372290b84b5694f2029d\",\n      \"name\": \"Sala Secundaria Mozart\",\n      \"capacity\": 6,\n      \"floor\": 2,\n      \"status\": \"disponible\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 2,\n  \"total\": 2,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Salas - Página 2",
@@ -2540,7 +2601,68 @@
             },
             "description": "Listado de salas en página 2 con limit=2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Salas - Página 2 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms?page=2&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de salas en página 2 con limit=2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 2,\n  \"limit\": 2,\n  \"total\": 2,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Salas - Orden Ascendente por Capacidad",
@@ -2571,7 +2693,64 @@
             },
             "description": "Listado de salas ordenadas ascendentemente por capacity. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Salas - Orden Ascendente por Capacidad - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms?sort=capacity",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "capacity"
+                    }
+                  ]
+                },
+                "description": "Listado de salas ordenadas ascendentemente por capacity. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029d\",\n      \"name\": \"Sala Secundaria Mozart\",\n      \"capacity\": 6,\n      \"floor\": 2\n    },\n    {\n      \"_id\": \"6add372290b84b5694f2029c\",\n      \"name\": \"Sala Principal Apolo\",\n      \"capacity\": 10,\n      \"floor\": 1\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 2,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Salas - Orden Descendente por Nombre",
@@ -2602,7 +2781,64 @@
             },
             "description": "Listado de salas ordenadas descendentemente por nombre. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Salas - Orden Descendente por Nombre - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms?sort=-name",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "-name"
+                    }
+                  ]
+                },
+                "description": "Listado de salas ordenadas descendentemente por nombre. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029d\",\n      \"name\": \"Sala Secundaria Mozart\",\n      \"capacity\": 6\n    },\n    {\n      \"_id\": \"6add372290b84b5694f2029c\",\n      \"name\": \"Sala Principal Apolo\",\n      \"capacity\": 10\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 2,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Salas - Búsqueda con Resultados",
@@ -2633,7 +2869,64 @@
             },
             "description": "Búsqueda de salas que coinciden con el término. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Salas - Búsqueda con Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms?search=Principal",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "Principal"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de salas que coinciden con el término. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029c\",\n      \"name\": \"Sala Principal Apolo\",\n      \"capacity\": 10\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Salas - Búsqueda sin Resultados",
@@ -2664,7 +2957,64 @@
             },
             "description": "Búsqueda de salas sin coincidencias. Status esperado: 200 OK (data vacía)."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Salas - Búsqueda sin Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms?search=TextoQueNoExiste999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "TextoQueNoExiste999"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de salas sin coincidencias. Status esperado: 200 OK (data vacía)."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 0,\n  \"pages\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Bandas - Página 1",
@@ -2699,7 +3049,68 @@
             },
             "description": "Listado de bandas en página 1 con limit=2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Bandas - Página 1 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands?page=1&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de bandas en página 1 con limit=2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029e\",\n      \"name\": \"Los Ecos del Barrio\",\n      \"genre\": \"rock\",\n      \"active\": true\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Bandas - Página 2",
@@ -2734,7 +3145,68 @@
             },
             "description": "Listado de bandas en página 2 con limit=2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Bandas - Página 2 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands?page=2&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de bandas en página 2 con limit=2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 2,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Bandas - Orden Ascendente por Nombre",
@@ -2765,7 +3237,64 @@
             },
             "description": "Listado de bandas ordenadas por nombre. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Bandas - Orden Ascendente por Nombre - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands?sort=name",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "name"
+                    }
+                  ]
+                },
+                "description": "Listado de bandas ordenadas por nombre. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029e\",\n      \"name\": \"Los Ecos del Barrio\",\n      \"genre\": \"rock\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Bandas - Orden Descendente por Fecha Creación",
@@ -2796,7 +3325,64 @@
             },
             "description": "Listado de bandas ordenadas por createdAt descendente. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Bandas - Orden Descendente por Fecha Creación - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands?sort=-createdAt",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "-createdAt"
+                    }
+                  ]
+                },
+                "description": "Listado de bandas ordenadas por createdAt descendente. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029e\",\n      \"name\": \"Los Ecos del Barrio\",\n      \"createdAt\": \"2026-11-01T10:00:00.000Z\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Bandas - Búsqueda con Resultados",
@@ -2827,7 +3413,64 @@
             },
             "description": "Búsqueda de bandas por nombre con resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Bandas - Búsqueda con Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands?search=Ecos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "Ecos"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de bandas por nombre con resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f2029e\",\n      \"name\": \"Los Ecos del Barrio\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Bandas - Búsqueda sin Resultados",
@@ -2858,7 +3501,64 @@
             },
             "description": "Búsqueda de bandas por nombre sin resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Bandas - Búsqueda sin Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands?search=InexistenteBandaZ",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "InexistenteBandaZ"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de bandas por nombre sin resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 0,\n  \"pages\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Músicos - Página 1",
@@ -2893,7 +3593,68 @@
             },
             "description": "Listado de músicos en página 1. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos - Página 1 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/musicians?page=1&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "musicians"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de músicos en página 1. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a0\",\n      \"name\": \"Federico Baterista\",\n      \"instrument\": \"Batería\",\n      \"email\": \"federico@ecos.com\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Músicos - Página 2",
@@ -2928,7 +3689,68 @@
             },
             "description": "Listado de músicos en página 2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos - Página 2 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/musicians?page=2&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "musicians"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de músicos en página 2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 2,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Músicos - Orden Ascendente por Instrumento",
@@ -2959,7 +3781,64 @@
             },
             "description": "Listado de músicos ordenados por instrumento. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos - Orden Ascendente por Instrumento - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/musicians?sort=instrument",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "musicians"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "instrument"
+                    }
+                  ]
+                },
+                "description": "Listado de músicos ordenados por instrumento. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a0\",\n      \"name\": \"Federico Baterista\",\n      \"instrument\": \"Batería\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Músicos - Orden Descendente por Nombre",
@@ -2990,7 +3869,64 @@
             },
             "description": "Listado de músicos ordenados por nombre descendente. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos - Orden Descendente por Nombre - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/musicians?sort=-name",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "musicians"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "-name"
+                    }
+                  ]
+                },
+                "description": "Listado de músicos ordenados por nombre descendente. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a0\",\n      \"name\": \"Federico Baterista\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Músicos - Búsqueda con Resultados (nombre o email)",
@@ -3021,7 +3957,64 @@
             },
             "description": "Búsqueda de músicos que coincidan por nombre o email. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos - Búsqueda con Resultados (nombre o email) - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/musicians?search=ecos.com",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "musicians"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "ecos.com"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de músicos que coincidan por nombre o email. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a0\",\n      \"name\": \"Federico Baterista\",\n      \"email\": \"federico@ecos.com\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Músicos - Búsqueda sin Resultados",
@@ -3052,7 +4045,64 @@
             },
             "description": "Búsqueda de músicos sin resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos - Búsqueda sin Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/musicians?search=no_existe_musico@correo.com",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "musicians"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "no_existe_musico@correo.com"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de músicos sin resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 0,\n  \"pages\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Equipo - Página 1",
@@ -3087,7 +4137,68 @@
             },
             "description": "Listado de equipo en página 1. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Equipo - Página 1 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment?page=1&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de equipo en página 1. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a2\",\n      \"name\": \"Amplificador Marshall 50W\",\n      \"category\": \"cuerdas\",\n      \"totalUnits\": 4,\n      \"availableUnits\": 4\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Equipo - Página 2",
@@ -3122,7 +4233,68 @@
             },
             "description": "Listado de equipo en página 2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Equipo - Página 2 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment?page=2&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de equipo en página 2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 2,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Equipo - Orden Ascendente por Disponibles",
@@ -3153,7 +4325,64 @@
             },
             "description": "Listado de equipo ordenado por unidades disponibles. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Equipo - Orden Ascendente por Disponibles - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment?sort=availableUnits",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "availableUnits"
+                    }
+                  ]
+                },
+                "description": "Listado de equipo ordenado por unidades disponibles. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a2\",\n      \"name\": \"Amplificador Marshall 50W\",\n      \"availableUnits\": 4\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Equipo - Orden Descendente por Nombre",
@@ -3184,7 +4413,64 @@
             },
             "description": "Listado de equipo ordenado por nombre descendente. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Equipo - Orden Descendente por Nombre - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment?sort=-name",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "-name"
+                    }
+                  ]
+                },
+                "description": "Listado de equipo ordenado por nombre descendente. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a2\",\n      \"name\": \"Amplificador Marshall 50W\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Equipo - Búsqueda con Resultados",
@@ -3215,7 +4501,64 @@
             },
             "description": "Búsqueda de equipo por nombre con resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Equipo - Búsqueda con Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment?search=Marshall",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "Marshall"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de equipo por nombre con resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372290b84b5694f202a2\",\n      \"name\": \"Amplificador Marshall 50W\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Equipo - Búsqueda sin Resultados",
@@ -3246,7 +4589,64 @@
             },
             "description": "Búsqueda de equipo por nombre sin resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Equipo - Búsqueda sin Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment?search=EquipoFantasmaXYZ",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "EquipoFantasmaXYZ"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de equipo por nombre sin resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 0,\n  \"pages\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Reservas - Página 1",
@@ -3281,7 +4681,68 @@
             },
             "description": "Listado de reservas en página 1. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas - Página 1 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings?page=1&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de reservas en página 1. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a3\",\n      \"date\": \"2026-11-15\",\n      \"startHour\": 15,\n      \"endHour\": 17,\n      \"status\": \"apartada\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Reservas - Página 2",
@@ -3316,7 +4777,68 @@
             },
             "description": "Listado de reservas en página 2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas - Página 2 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings?page=2&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de reservas en página 2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 2,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Reservas - Orden Ascendente por Fecha y Hora",
@@ -3347,7 +4869,64 @@
             },
             "description": "Listado de reservas ordenadas por fecha. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas - Orden Ascendente por Fecha y Hora - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings?sort=date",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "date"
+                    }
+                  ]
+                },
+                "description": "Listado de reservas ordenadas por fecha. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a3\",\n      \"date\": \"2026-11-15\",\n      \"startHour\": 15,\n      \"endHour\": 17\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Reservas - Orden Descendente por Hora de Inicio",
@@ -3378,7 +4957,64 @@
             },
             "description": "Listado de reservas ordenadas por hora de inicio descendente. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas - Orden Descendente por Hora de Inicio - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings?sort=-startHour",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "-startHour"
+                    }
+                  ]
+                },
+                "description": "Listado de reservas ordenadas por hora de inicio descendente. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a3\",\n      \"date\": \"2026-11-15\",\n      \"startHour\": 15,\n      \"endHour\": 17\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Reservas - Búsqueda con Resultados por Notas",
@@ -3409,7 +5045,64 @@
             },
             "description": "Búsqueda de reservas por contenido en notes. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas - Búsqueda con Resultados por Notas - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings?search=Ensayo",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "Ensayo"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de reservas por contenido en notes. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a3\",\n      \"notes\": \"Ensayo previo a presentación\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Reservas - Búsqueda sin Resultados",
@@ -3440,7 +5133,64 @@
             },
             "description": "Búsqueda de reservas por notes sin resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas - Búsqueda sin Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings?search=NotaQueNoExisteJamas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "NotaQueNoExisteJamas"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de reservas por notes sin resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 0,\n  \"pages\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Préstamos - Página 1",
@@ -3475,7 +5225,68 @@
             },
             "description": "Listado de préstamos en página 1. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Préstamos - Página 1 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/loans?page=1&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de préstamos en página 1. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"units\": 2,\n      \"status\": \"prestado\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Préstamos - Página 2",
@@ -3510,7 +5321,68 @@
             },
             "description": "Listado de préstamos en página 2. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Préstamos - Página 2 - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/loans?page=2&limit=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    }
+                  ]
+                },
+                "description": "Listado de préstamos en página 2. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 2,\n  \"limit\": 2,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Préstamos - Orden Ascendente por Unidades",
@@ -3541,7 +5413,64 @@
             },
             "description": "Listado de préstamos ordenados por unidades. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Préstamos - Orden Ascendente por Unidades - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/loans?sort=units",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "units"
+                    }
+                  ]
+                },
+                "description": "Listado de préstamos ordenados por unidades. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"units\": 2,\n      \"status\": \"prestado\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Préstamos - Orden Descendente por Fecha de Creación",
@@ -3572,7 +5501,64 @@
             },
             "description": "Listado de préstamos ordenados por createdAt descendente. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Préstamos - Orden Descendente por Fecha de Creación - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/loans?sort=-createdAt",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "-createdAt"
+                    }
+                  ]
+                },
+                "description": "Listado de préstamos ordenados por createdAt descendente. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"units\": 2,\n      \"createdAt\": \"2026-11-01T10:00:00.000Z\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Préstamos - Búsqueda con Resultados por Estado",
@@ -3603,7 +5589,64 @@
             },
             "description": "Búsqueda de préstamos por estado con resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Préstamos - Búsqueda con Resultados por Estado - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/loans?search=devuelto",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "devuelto"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de préstamos por estado con resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"6add372390b84b5694f202a4\",\n      \"units\": 2,\n      \"status\": \"devuelto\"\n    }\n  ],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Préstamos - Búsqueda sin Resultados",
@@ -3634,7 +5677,64 @@
             },
             "description": "Búsqueda de préstamos por estado sin resultados. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Préstamos - Búsqueda sin Resultados - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/loans?search=EstadoFalso",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "EstadoFalso"
+                    }
+                  ]
+                },
+                "description": "Búsqueda de préstamos por estado sin resultados. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [],\n  \"page\": 1,\n  \"limit\": 10,\n  \"total\": 0,\n  \"pages\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Horario de una Sala",
@@ -3667,7 +5767,66 @@
             },
             "description": "Devuelve las reservas de ese día ordenadas por startHour, con la banda poblada. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Horario de una Sala - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms/{{roomId}}/schedule?date=2026-11-15",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms",
+                    "{{roomId}}",
+                    "schedule"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "2026-11-15"
+                    }
+                  ]
+                },
+                "description": "Devuelve las reservas de ese día ordenadas por startHour, con la banda poblada. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"room\": {\n    \"_id\": \"6add372290b84b5694f2029c\",\n    \"name\": \"Sala Principal Apolo Actualizada\",\n    \"capacity\": 12,\n    \"status\": \"disponible\"\n  },\n  \"date\": \"2026-11-15\",\n  \"bookings\": []\n}"
+            }
+          ]
         },
         {
           "name": "Músicos de una Banda",
@@ -3694,7 +5853,60 @@
             },
             "description": "Devuelve los músicos pertenecientes a la banda. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Músicos de una Banda - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands/{{bandId}}/musicians",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands",
+                    "{{bandId}}",
+                    "musicians"
+                  ]
+                },
+                "description": "Devuelve los músicos pertenecientes a la banda. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"_id\": \"6add372290b84b5694f202a0\",\n    \"name\": \"Federico Baterista\",\n    \"instrument\": \"Batería\",\n    \"email\": \"federico@ecos.com\",\n    \"active\": true\n  }\n]"
+            }
+          ]
         },
         {
           "name": "Reservas de una Banda",
@@ -3721,7 +5933,60 @@
             },
             "description": "Devuelve las reservas de la banda con sala poblada. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Reservas de una Banda - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bands/{{bandId}}/bookings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bands",
+                    "{{bandId}}",
+                    "bookings"
+                  ]
+                },
+                "description": "Devuelve las reservas de la banda con sala poblada. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"_id\": \"6add372390b84b5694f202a3\",\n    \"date\": \"2026-11-15\",\n    \"startHour\": 15,\n    \"endHour\": 17,\n    \"room\": {\n      \"_id\": \"6add372290b84b5694f2029c\",\n      \"name\": \"Sala Principal Apolo Actualizada\"\n    }\n  }\n]"
+            }
+          ]
         },
         {
           "name": "Stats - Reservas por Estado",
@@ -3747,7 +6012,59 @@
             },
             "description": "Aggregate de conteo de reservas por estado. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Stats - Reservas por Estado - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bookings/stats",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bookings",
+                    "stats"
+                  ]
+                },
+                "description": "Aggregate de conteo de reservas por estado. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"status\": \"apartada\",\n    \"count\": 3\n  },\n  {\n    \"status\": \"confirmada\",\n    \"count\": 2\n  },\n  {\n    \"status\": \"cancelada\",\n    \"count\": 1\n  }\n]"
+            }
+          ]
         },
         {
           "name": "Stats - Reservas Activas por Sala",
@@ -3773,7 +6090,59 @@
             },
             "description": "Aggregate de reservas activas por cada sala. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Stats - Reservas Activas por Sala - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/rooms/stats",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "rooms",
+                    "stats"
+                  ]
+                },
+                "description": "Aggregate de reservas activas por cada sala. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"_id\": \"6add372290b84b5694f2029c\",\n    \"name\": \"Sala Principal Apolo Actualizada\",\n    \"capacity\": 12,\n    \"floor\": 1,\n    \"status\": \"disponible\",\n    \"activeBookingsCount\": 2\n  }\n]"
+            }
+          ]
         },
         {
           "name": "Stats - Unidades de Equipo por Categoría",
@@ -3799,7 +6168,59 @@
             },
             "description": "Aggregate de unidades totales y disponibles por categoría. Status esperado: 200 OK."
           },
-          "response": []
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Respuesta en formato JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "Stats - Unidades de Equipo por Categoría - Ejemplo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/equipment/stats",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "equipment",
+                    "stats"
+                  ]
+                },
+                "description": "Aggregate de unidades totales y disponibles por categoría. Status esperado: 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"category\": \"audio\",\n    \"totalUnits\": 10,\n    \"availableUnits\": 8,\n    \"borrowedUnits\": 2,\n    \"equipmentCount\": 3\n  },\n  {\n    \"category\": \"cuerdas\",\n    \"totalUnits\": 6,\n    \"availableUnits\": 4,\n    \"borrowedUnits\": 2,\n    \"equipmentCount\": 2\n  }\n]"
+            }
+          ]
         }
       ]
     },
@@ -3838,6 +6259,22 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Responde con objeto JSON de error', function () {",
+                  "    pm.expect(pm.response.json().error).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Nombre de Sala Repetido (409) - Ejemplo (409)",
@@ -3882,22 +6319,6 @@
               ],
               "body": "{\n  \"error\": \"Ya existe un registro con el valor 'Sala Principal Apolo Actualizada' en el campo 'name'\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409', function () {",
-                  "    pm.response.to.have.status(409);",
-                  "});",
-                  "pm.test('Responde con objeto JSON de error', function () {",
-                  "    pm.expect(pm.response.json().error).to.be.a('string');",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -3932,6 +6353,22 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Responde con objeto JSON de error', function () {",
+                  "    pm.expect(pm.response.json().error).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Email de Músico Repetido (409) - Ejemplo (409)",
@@ -3976,22 +6413,6 @@
               ],
               "body": "{\n  \"error\": \"Ya existe un registro con el valor 'federico@ecos.com' en el campo 'email'\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409', function () {",
-                  "    pm.response.to.have.status(409);",
-                  "});",
-                  "pm.test('Responde con objeto JSON de error', function () {",
-                  "    pm.expect(pm.response.json().error).to.be.a('string');",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4026,6 +6447,22 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Responde con mensaje claro', function () {",
+                  "    pm.expect(pm.response.json().error).to.include('mayor');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Horas Invertidas en Reserva (400) - Ejemplo (400)",
@@ -4070,22 +6507,6 @@
               ],
               "body": "{\n  \"error\": \"La hora de fin debe ser estrictamente mayor que la hora de inicio\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 400', function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});",
-                  "pm.test('Responde con mensaje claro', function () {",
-                  "    pm.expect(pm.response.json().error).to.include('mayor');",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4120,6 +6541,22 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Responde con mensaje claro', function () {",
+                  "    pm.expect(pm.response.json().error).to.include('máximo 3 horas');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Reserva de Más de 3 Horas (400) - Ejemplo (400)",
@@ -4164,22 +6601,6 @@
               ],
               "body": "{\n  \"error\": \"La reserva dura como máximo 3 horas\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 400', function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});",
-                  "pm.test('Responde con mensaje claro', function () {",
-                  "    pm.expect(pm.response.json().error).to.include('máximo 3 horas');",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4214,6 +6635,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.expect([400, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Sala en Mantenimiento (409) - Ejemplo (409)",
@@ -4258,19 +6692,6 @@
               ],
               "body": "{\n  \"error\": \"La sala no está disponible (se encuentra en mantenimiento)\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409 o mensaje de sala no disponible', function () {",
-                  "    pm.expect([400, 409]).to.include(pm.response.code);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4305,6 +6726,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.expect([400, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Banda Inactiva (409) - Ejemplo (409)",
@@ -4349,19 +6783,6 @@
               ],
               "body": "{\n  \"error\": \"La banda no está activa\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409 o mensaje de banda inactiva', function () {",
-                  "    pm.expect([400, 409]).to.include(pm.response.code);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4396,6 +6817,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.expect([400, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Banda que no Cabe en la Sala (409) - Ejemplo (409)",
@@ -4440,19 +6874,6 @@
               ],
               "body": "{\n  \"error\": \"Los músicos activos de la banda (15) exceden la capacidad de la sala (10)\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409 o mensaje de capacidad', function () {",
-                  "    pm.expect([400, 409]).to.include(pm.response.code);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4487,6 +6908,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.expect([400, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Traslape de Horario (409) - Ejemplo (409)",
@@ -4531,19 +6965,6 @@
               ],
               "body": "{\n  \"error\": \"Existe un traslape de horario con otra reserva apartada o confirmada en la misma sala\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409 traslape', function () {",
-                  "    pm.expect([400, 409]).to.include(pm.response.code);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4578,6 +6999,22 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Mensaje de error claro', function () {",
+                  "    pm.expect(pm.response.json().error).to.include('insuficientes');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Equipo de Más de lo Disponible (409) - Ejemplo (409)",
@@ -4622,22 +7059,6 @@
               ],
               "body": "{\n  \"error\": \"Unidades insuficientes para el equipo 'Amplificador Marshall Valve 50W'. Solicitadas: 999, Disponibles: 6\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409', function () {",
-                  "    pm.response.to.have.status(409);",
-                  "});",
-                  "pm.test('Mensaje de error claro', function () {",
-                  "    pm.expect(pm.response.json().error).to.include('insuficientes');",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4673,6 +7094,19 @@
               }
             }
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Cambio de Estado No Permitido (409) - Ejemplo (409)",
@@ -4718,19 +7152,6 @@
               ],
               "body": "{\n  \"error\": \"Transición de estado no permitida\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409', function () {",
-                  "    pm.response.to.have.status(409);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4757,6 +7178,19 @@
             },
             "description": "Intento de borrar una sala que tiene reservas activas. Status esperado: 409 Conflict."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.expect([404, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Borrado de Sala con Reserva Activa (409) - Ejemplo (409)",
@@ -4793,19 +7227,6 @@
               ],
               "body": "{\n  \"error\": \"No se puede eliminar la sala porque tiene reservas activas (apartadas o confirmadas)\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409 o 404', function () {",
-                  "    pm.expect([404, 409]).to.include(pm.response.code);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4832,6 +7253,19 @@
             },
             "description": "Intento de borrar un equipo que tiene availableUnits menor que totalUnits. Status esperado: 409 Conflict."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 409', function () {",
+                  "    pm.expect([200, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - Borrado de Equipo Prestado (409) - Ejemplo (409)",
@@ -4868,19 +7302,6 @@
               ],
               "body": "{\n  \"error\": \"No se puede eliminar el equipo porque tiene unidades actualmente prestadas\"\n}"
             }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 409 o 200 si ya fue devuelto', function () {",
-                  "    pm.expect([200, 409]).to.include(pm.response.code);",
-                  "});"
-                ]
-              }
-            }
           ]
         },
         {
@@ -4907,6 +7328,22 @@
             },
             "description": "Búsqueda con un ID válido de Mongo pero inexistente en la BD. Status esperado: 404 Not Found."
           },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code es 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Error con mensaje claro', function () {",
+                  "    pm.expect(pm.response.json().error).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "response": [
             {
               "name": "Error - ID Inexistente (404) - Ejemplo (404)",
@@ -4942,22 +7379,6 @@
                 }
               ],
               "body": "{\n  \"error\": \"Sala no encontrada\"\n}"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code es 404', function () {",
-                  "    pm.response.to.have.status(404);",
-                  "});",
-                  "pm.test('Error con mensaje claro', function () {",
-                  "    pm.expect(pm.response.json().error).to.be.a('string');",
-                  "});"
-                ]
-              }
             }
           ]
         }

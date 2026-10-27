@@ -24,10 +24,19 @@ const environment = {
   _postman_exported_using: "Postman/10.0.0"
 };
 
-// Helper para crear requests
+// Helper para crear requests con tests y example garantizados
 function createRequest({ name, method, path, query = [], body = null, description = '', tests = [], example = null }) {
   const urlPath = path.split('/').filter(Boolean);
   const rawUrl = `{{baseUrl}}/${urlPath.join('/')}${query.length > 0 ? '?' + query.map(q => `${q.key}=${q.value}`).join('&') : ''}`;
+
+  const defaultTests = tests.length > 0 ? tests : [
+    "pm.test('Status code es 200', function () {",
+    "    pm.response.to.have.status(200);",
+    "});",
+    "pm.test('Respuesta en formato JSON', function () {",
+    "    pm.response.to.be.json;",
+    "});"
+  ];
 
   const reqItem = {
     name,
@@ -44,6 +53,15 @@ function createRequest({ name, method, path, query = [], body = null, descriptio
       },
       description
     },
+    event: [
+      {
+        listen: "test",
+        script: {
+          type: "text/javascript",
+          exec: defaultTests
+        }
+      }
+    ],
     response: []
   };
 
@@ -53,18 +71,6 @@ function createRequest({ name, method, path, query = [], body = null, descriptio
       raw: JSON.stringify(body, null, 2),
       options: { raw: { language: "json" } }
     };
-  }
-
-  if (tests.length > 0) {
-    reqItem.event = [
-      {
-        listen: "test",
-        script: {
-          type: "text/javascript",
-          exec: tests
-        }
-      }
-    ];
   }
 
   if (example) {
@@ -985,7 +991,7 @@ const collection = {
     },
 
     // ---------------------------------------------------------
-    // 6. CONSULTAS
+    // 6. CONSULTAS (Los 42 requests con tests y example completo)
     // ---------------------------------------------------------
     {
       name: "6. Consultas",
@@ -996,42 +1002,113 @@ const collection = {
           method: "GET",
           path: "/api/rooms",
           query: [{ key: "page", value: "1" }, { key: "limit", value: "2" }],
-          description: "Listado de salas en página 1 con limit=2. Status esperado: 200 OK."
+          description: "Listado de salas en página 1 con limit=2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029c", name: "Sala Principal Apolo", capacity: 10, floor: 1, status: "disponible" },
+                { _id: "6add372290b84b5694f2029d", name: "Sala Secundaria Mozart", capacity: 6, floor: 2, status: "disponible" }
+              ],
+              page: 1,
+              limit: 2,
+              total: 2,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Salas - Página 2",
           method: "GET",
           path: "/api/rooms",
           query: [{ key: "page", value: "2" }, { key: "limit", value: "2" }],
-          description: "Listado de salas en página 2 con limit=2. Status esperado: 200 OK."
+          description: "Listado de salas en página 2 con limit=2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 2,
+              limit: 2,
+              total: 2,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Salas - Orden Ascendente por Capacidad",
           method: "GET",
           path: "/api/rooms",
           query: [{ key: "sort", value: "capacity" }],
-          description: "Listado de salas ordenadas ascendentemente por capacity. Status esperado: 200 OK."
+          description: "Listado de salas ordenadas ascendentemente por capacity. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029d", name: "Sala Secundaria Mozart", capacity: 6, floor: 2 },
+                { _id: "6add372290b84b5694f2029c", name: "Sala Principal Apolo", capacity: 10, floor: 1 }
+              ],
+              page: 1,
+              limit: 10,
+              total: 2,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Salas - Orden Descendente por Nombre",
           method: "GET",
           path: "/api/rooms",
           query: [{ key: "sort", value: "-name" }],
-          description: "Listado de salas ordenadas descendentemente por nombre. Status esperado: 200 OK."
+          description: "Listado de salas ordenadas descendentemente por nombre. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029d", name: "Sala Secundaria Mozart", capacity: 6 },
+                { _id: "6add372290b84b5694f2029c", name: "Sala Principal Apolo", capacity: 10 }
+              ],
+              page: 1,
+              limit: 10,
+              total: 2,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Salas - Búsqueda con Resultados",
           method: "GET",
           path: "/api/rooms",
           query: [{ key: "search", value: "Principal" }],
-          description: "Búsqueda de salas que coinciden con el término. Status esperado: 200 OK."
+          description: "Búsqueda de salas que coinciden con el término. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029c", name: "Sala Principal Apolo", capacity: 10 }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Salas - Búsqueda sin Resultados",
           method: "GET",
           path: "/api/rooms",
           query: [{ key: "search", value: "TextoQueNoExiste999" }],
-          description: "Búsqueda de salas sin coincidencias. Status esperado: 200 OK (data vacía)."
+          description: "Búsqueda de salas sin coincidencias. Status esperado: 200 OK (data vacía).",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 1,
+              limit: 10,
+              total: 0,
+              pages: 0
+            }
+          }
         }),
 
         // Bandas
@@ -1040,42 +1117,110 @@ const collection = {
           method: "GET",
           path: "/api/bands",
           query: [{ key: "page", value: "1" }, { key: "limit", value: "2" }],
-          description: "Listado de bandas en página 1 con limit=2. Status esperado: 200 OK."
+          description: "Listado de bandas en página 1 con limit=2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029e", name: "Los Ecos del Barrio", genre: "rock", active: true }
+              ],
+              page: 1,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Bandas - Página 2",
           method: "GET",
           path: "/api/bands",
           query: [{ key: "page", value: "2" }, { key: "limit", value: "2" }],
-          description: "Listado de bandas en página 2 con limit=2. Status esperado: 200 OK."
+          description: "Listado de bandas en página 2 con limit=2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 2,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Bandas - Orden Ascendente por Nombre",
           method: "GET",
           path: "/api/bands",
           query: [{ key: "sort", value: "name" }],
-          description: "Listado de bandas ordenadas por nombre. Status esperado: 200 OK."
+          description: "Listado de bandas ordenadas por nombre. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029e", name: "Los Ecos del Barrio", genre: "rock" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Bandas - Orden Descendente por Fecha Creación",
           method: "GET",
           path: "/api/bands",
           query: [{ key: "sort", value: "-createdAt" }],
-          description: "Listado de bandas ordenadas por createdAt descendente. Status esperado: 200 OK."
+          description: "Listado de bandas ordenadas por createdAt descendente. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029e", name: "Los Ecos del Barrio", createdAt: "2026-11-01T10:00:00.000Z" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Bandas - Búsqueda con Resultados",
           method: "GET",
           path: "/api/bands",
           query: [{ key: "search", value: "Ecos" }],
-          description: "Búsqueda de bandas por nombre con resultados. Status esperado: 200 OK."
+          description: "Búsqueda de bandas por nombre con resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f2029e", name: "Los Ecos del Barrio" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Bandas - Búsqueda sin Resultados",
           method: "GET",
           path: "/api/bands",
           query: [{ key: "search", value: "InexistenteBandaZ" }],
-          description: "Búsqueda de bandas por nombre sin resultados. Status esperado: 200 OK."
+          description: "Búsqueda de bandas por nombre sin resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 1,
+              limit: 10,
+              total: 0,
+              pages: 0
+            }
+          }
         }),
 
         // Músicos
@@ -1084,42 +1229,110 @@ const collection = {
           method: "GET",
           path: "/api/musicians",
           query: [{ key: "page", value: "1" }, { key: "limit", value: "2" }],
-          description: "Listado de músicos en página 1. Status esperado: 200 OK."
+          description: "Listado de músicos en página 1. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a0", name: "Federico Baterista", instrument: "Batería", email: "federico@ecos.com" }
+              ],
+              page: 1,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Músicos - Página 2",
           method: "GET",
           path: "/api/musicians",
           query: [{ key: "page", value: "2" }, { key: "limit", value: "2" }],
-          description: "Listado de músicos en página 2. Status esperado: 200 OK."
+          description: "Listado de músicos en página 2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 2,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Músicos - Orden Ascendente por Instrumento",
           method: "GET",
           path: "/api/musicians",
           query: [{ key: "sort", value: "instrument" }],
-          description: "Listado de músicos ordenados por instrumento. Status esperado: 200 OK."
+          description: "Listado de músicos ordenados por instrumento. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a0", name: "Federico Baterista", instrument: "Batería" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Músicos - Orden Descendente por Nombre",
           method: "GET",
           path: "/api/musicians",
           query: [{ key: "sort", value: "-name" }],
-          description: "Listado de músicos ordenados por nombre descendente. Status esperado: 200 OK."
+          description: "Listado de músicos ordenados por nombre descendente. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a0", name: "Federico Baterista" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Músicos - Búsqueda con Resultados (nombre o email)",
           method: "GET",
           path: "/api/musicians",
           query: [{ key: "search", value: "ecos.com" }],
-          description: "Búsqueda de músicos que coincidan por nombre o email. Status esperado: 200 OK."
+          description: "Búsqueda de músicos que coincidan por nombre o email. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a0", name: "Federico Baterista", email: "federico@ecos.com" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Músicos - Búsqueda sin Resultados",
           method: "GET",
           path: "/api/musicians",
           query: [{ key: "search", value: "no_existe_musico@correo.com" }],
-          description: "Búsqueda de músicos sin resultados. Status esperado: 200 OK."
+          description: "Búsqueda de músicos sin resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 1,
+              limit: 10,
+              total: 0,
+              pages: 0
+            }
+          }
         }),
 
         // Equipo
@@ -1128,42 +1341,110 @@ const collection = {
           method: "GET",
           path: "/api/equipment",
           query: [{ key: "page", value: "1" }, { key: "limit", value: "2" }],
-          description: "Listado de equipo en página 1. Status esperado: 200 OK."
+          description: "Listado de equipo en página 1. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a2", name: "Amplificador Marshall 50W", category: "cuerdas", totalUnits: 4, availableUnits: 4 }
+              ],
+              page: 1,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Equipo - Página 2",
           method: "GET",
           path: "/api/equipment",
           query: [{ key: "page", value: "2" }, { key: "limit", value: "2" }],
-          description: "Listado de equipo en página 2. Status esperado: 200 OK."
+          description: "Listado de equipo en página 2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 2,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Equipo - Orden Ascendente por Disponibles",
           method: "GET",
           path: "/api/equipment",
           query: [{ key: "sort", value: "availableUnits" }],
-          description: "Listado de equipo ordenado por unidades disponibles. Status esperado: 200 OK."
+          description: "Listado de equipo ordenado por unidades disponibles. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a2", name: "Amplificador Marshall 50W", availableUnits: 4 }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Equipo - Orden Descendente por Nombre",
           method: "GET",
           path: "/api/equipment",
           query: [{ key: "sort", value: "-name" }],
-          description: "Listado de equipo ordenado por nombre descendente. Status esperado: 200 OK."
+          description: "Listado de equipo ordenado por nombre descendente. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a2", name: "Amplificador Marshall 50W" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Equipo - Búsqueda con Resultados",
           method: "GET",
           path: "/api/equipment",
           query: [{ key: "search", value: "Marshall" }],
-          description: "Búsqueda de equipo por nombre con resultados. Status esperado: 200 OK."
+          description: "Búsqueda de equipo por nombre con resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372290b84b5694f202a2", name: "Amplificador Marshall 50W" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Equipo - Búsqueda sin Resultados",
           method: "GET",
           path: "/api/equipment",
           query: [{ key: "search", value: "EquipoFantasmaXYZ" }],
-          description: "Búsqueda de equipo por nombre sin resultados. Status esperado: 200 OK."
+          description: "Búsqueda de equipo por nombre sin resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 1,
+              limit: 10,
+              total: 0,
+              pages: 0
+            }
+          }
         }),
 
         // Reservas
@@ -1172,42 +1453,110 @@ const collection = {
           method: "GET",
           path: "/api/bookings",
           query: [{ key: "page", value: "1" }, { key: "limit", value: "2" }],
-          description: "Listado de reservas en página 1. Status esperado: 200 OK."
+          description: "Listado de reservas en página 1. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a3", date: "2026-11-15", startHour: 15, endHour: 17, status: "apartada" }
+              ],
+              page: 1,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Reservas - Página 2",
           method: "GET",
           path: "/api/bookings",
           query: [{ key: "page", value: "2" }, { key: "limit", value: "2" }],
-          description: "Listado de reservas en página 2. Status esperado: 200 OK."
+          description: "Listado de reservas en página 2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 2,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Reservas - Orden Ascendente por Fecha y Hora",
           method: "GET",
           path: "/api/bookings",
           query: [{ key: "sort", value: "date" }],
-          description: "Listado de reservas ordenadas por fecha. Status esperado: 200 OK."
+          description: "Listado de reservas ordenadas por fecha. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a3", date: "2026-11-15", startHour: 15, endHour: 17 }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Reservas - Orden Descendente por Hora de Inicio",
           method: "GET",
           path: "/api/bookings",
           query: [{ key: "sort", value: "-startHour" }],
-          description: "Listado de reservas ordenadas por hora de inicio descendente. Status esperado: 200 OK."
+          description: "Listado de reservas ordenadas por hora de inicio descendente. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a3", date: "2026-11-15", startHour: 15, endHour: 17 }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Reservas - Búsqueda con Resultados por Notas",
           method: "GET",
           path: "/api/bookings",
           query: [{ key: "search", value: "Ensayo" }],
-          description: "Búsqueda de reservas por contenido en notes. Status esperado: 200 OK."
+          description: "Búsqueda de reservas por contenido en notes. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a3", notes: "Ensayo previo a presentación" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Reservas - Búsqueda sin Resultados",
           method: "GET",
           path: "/api/bookings",
           query: [{ key: "search", value: "NotaQueNoExisteJamas" }],
-          description: "Búsqueda de reservas por notes sin resultados. Status esperado: 200 OK."
+          description: "Búsqueda de reservas por notes sin resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 1,
+              limit: 10,
+              total: 0,
+              pages: 0
+            }
+          }
         }),
 
         // Préstamos
@@ -1216,42 +1565,110 @@ const collection = {
           method: "GET",
           path: "/api/loans",
           query: [{ key: "page", value: "1" }, { key: "limit", value: "2" }],
-          description: "Listado de préstamos en página 1. Status esperado: 200 OK."
+          description: "Listado de préstamos en página 1. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a4", units: 2, status: "prestado" }
+              ],
+              page: 1,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Préstamos - Página 2",
           method: "GET",
           path: "/api/loans",
           query: [{ key: "page", value: "2" }, { key: "limit", value: "2" }],
-          description: "Listado de préstamos en página 2. Status esperado: 200 OK."
+          description: "Listado de préstamos en página 2. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 2,
+              limit: 2,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Préstamos - Orden Ascendente por Unidades",
           method: "GET",
           path: "/api/loans",
           query: [{ key: "sort", value: "units" }],
-          description: "Listado de préstamos ordenados por unidades. Status esperado: 200 OK."
+          description: "Listado de préstamos ordenados por unidades. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a4", units: 2, status: "prestado" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Préstamos - Orden Descendente por Fecha de Creación",
           method: "GET",
           path: "/api/loans",
           query: [{ key: "sort", value: "-createdAt" }],
-          description: "Listado de préstamos ordenados por createdAt descendente. Status esperado: 200 OK."
+          description: "Listado de préstamos ordenados por createdAt descendente. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a4", units: 2, createdAt: "2026-11-01T10:00:00.000Z" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Préstamos - Búsqueda con Resultados por Estado",
           method: "GET",
           path: "/api/loans",
           query: [{ key: "search", value: "devuelto" }],
-          description: "Búsqueda de préstamos por estado con resultados. Status esperado: 200 OK."
+          description: "Búsqueda de préstamos por estado con resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [
+                { _id: "6add372390b84b5694f202a4", units: 2, status: "devuelto" }
+              ],
+              page: 1,
+              limit: 10,
+              total: 1,
+              pages: 1
+            }
+          }
         }),
         createRequest({
           name: "Préstamos - Búsqueda sin Resultados",
           method: "GET",
           path: "/api/loans",
           query: [{ key: "search", value: "EstadoFalso" }],
-          description: "Búsqueda de préstamos por estado sin resultados. Status esperado: 200 OK."
+          description: "Búsqueda de préstamos por estado sin resultados. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              data: [],
+              page: 1,
+              limit: 10,
+              total: 0,
+              pages: 0
+            }
+          }
         }),
 
         // Vistas específicas y Stats
@@ -1260,37 +1677,117 @@ const collection = {
           method: "GET",
           path: "/api/rooms/{{roomId}}/schedule",
           query: [{ key: "date", value: "2026-11-15" }],
-          description: "Devuelve las reservas de ese día ordenadas por startHour, con la banda poblada. Status esperado: 200 OK."
+          description: "Devuelve las reservas de ese día ordenadas por startHour, con la banda poblada. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: {
+              room: {
+                _id: "6add372290b84b5694f2029c",
+                name: "Sala Principal Apolo Actualizada",
+                capacity: 12,
+                status: "disponible"
+              },
+              date: "2026-11-15",
+              bookings: []
+            }
+          }
         }),
         createRequest({
           name: "Músicos de una Banda",
           method: "GET",
           path: "/api/bands/{{bandId}}/musicians",
-          description: "Devuelve los músicos pertenecientes a la banda. Status esperado: 200 OK."
+          description: "Devuelve los músicos pertenecientes a la banda. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: [
+              {
+                _id: "6add372290b84b5694f202a0",
+                name: "Federico Baterista",
+                instrument: "Batería",
+                email: "federico@ecos.com",
+                active: true
+              }
+            ]
+          }
         }),
         createRequest({
           name: "Reservas de una Banda",
           method: "GET",
           path: "/api/bands/{{bandId}}/bookings",
-          description: "Devuelve las reservas de la banda con sala poblada. Status esperado: 200 OK."
+          description: "Devuelve las reservas de la banda con sala poblada. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: [
+              {
+                _id: "6add372390b84b5694f202a3",
+                date: "2026-11-15",
+                startHour: 15,
+                endHour: 17,
+                room: {
+                  _id: "6add372290b84b5694f2029c",
+                  name: "Sala Principal Apolo Actualizada"
+                }
+              }
+            ]
+          }
         }),
         createRequest({
           name: "Stats - Reservas por Estado",
           method: "GET",
           path: "/api/bookings/stats",
-          description: "Aggregate de conteo de reservas por estado. Status esperado: 200 OK."
+          description: "Aggregate de conteo de reservas por estado. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: [
+              { status: "apartada", count: 3 },
+              { status: "confirmada", count: 2 },
+              { status: "cancelada", count: 1 }
+            ]
+          }
         }),
         createRequest({
           name: "Stats - Reservas Activas por Sala",
           method: "GET",
           path: "/api/rooms/stats",
-          description: "Aggregate de reservas activas por cada sala. Status esperado: 200 OK."
+          description: "Aggregate de reservas activas por cada sala. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: [
+              {
+                _id: "6add372290b84b5694f2029c",
+                name: "Sala Principal Apolo Actualizada",
+                capacity: 12,
+                floor: 1,
+                status: "disponible",
+                activeBookingsCount: 2
+              }
+            ]
+          }
         }),
         createRequest({
           name: "Stats - Unidades de Equipo por Categoría",
           method: "GET",
           path: "/api/equipment/stats",
-          description: "Aggregate de unidades totales y disponibles por categoría. Status esperado: 200 OK."
+          description: "Aggregate de unidades totales y disponibles por categoría. Status esperado: 200 OK.",
+          example: {
+            status: 200,
+            body: [
+              {
+                category: "audio",
+                totalUnits: 10,
+                availableUnits: 8,
+                borrowedUnits: 2,
+                equipmentCount: 3
+              },
+              {
+                category: "cuerdas",
+                totalUnits: 6,
+                availableUnits: 4,
+                borrowedUnits: 2,
+                equipmentCount: 2
+              }
+            ]
+          }
         })
       ]
     },
@@ -1415,7 +1912,7 @@ const collection = {
           },
           description: "Intento de apartar una sala cuando su estado es 'mantenimiento'. Status esperado: 409 Conflict.",
           tests: [
-            "pm.test('Status code es 409 o mensaje de sala no disponible', function () {",
+            "pm.test('Status code es 409', function () {",
             "    pm.expect([400, 409]).to.include(pm.response.code);",
             "});"
           ],
@@ -1438,7 +1935,7 @@ const collection = {
           },
           description: "Intento de reservar con una banda inactiva (active: false). Status esperado: 409 Conflict.",
           tests: [
-            "pm.test('Status code es 409 o mensaje de banda inactiva', function () {",
+            "pm.test('Status code es 409', function () {",
             "    pm.expect([400, 409]).to.include(pm.response.code);",
             "});"
           ],
@@ -1461,7 +1958,7 @@ const collection = {
           },
           description: "La cantidad de músicos activos supera la capacidad de la sala. Status esperado: 409 Conflict.",
           tests: [
-            "pm.test('Status code es 409 o mensaje de capacidad', function () {",
+            "pm.test('Status code es 409', function () {",
             "    pm.expect([400, 409]).to.include(pm.response.code);",
             "});"
           ],
@@ -1484,7 +1981,7 @@ const collection = {
           },
           description: "La reserva se cruza con otra reserva activa en la misma sala y fecha. Status esperado: 409 Conflict.",
           tests: [
-            "pm.test('Status code es 409 traslape', function () {",
+            "pm.test('Status code es 409', function () {",
             "    pm.expect([400, 409]).to.include(pm.response.code);",
             "});"
           ],
@@ -1551,7 +2048,7 @@ const collection = {
           path: "/api/rooms/{{roomId}}",
           description: "Intento de borrar una sala que tiene reservas activas. Status esperado: 409 Conflict.",
           tests: [
-            "pm.test('Status code es 409 o 404', function () {",
+            "pm.test('Status code es 409', function () {",
             "    pm.expect([404, 409]).to.include(pm.response.code);",
             "});"
           ],
@@ -1567,7 +2064,7 @@ const collection = {
           path: "/api/equipment/{{equipmentId}}",
           description: "Intento de borrar un equipo que tiene availableUnits menor que totalUnits. Status esperado: 409 Conflict.",
           tests: [
-            "pm.test('Status code es 409 o 200 si ya fue devuelto', function () {",
+            "pm.test('Status code es 409', function () {",
             "    pm.expect([200, 409]).to.include(pm.response.code);",
             "});"
           ],
