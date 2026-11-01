@@ -147,16 +147,16 @@ Los archivos exportados se encuentran en la carpeta [`postman/`](file:///postman
 2. **`Cabina.postman_environment.json`**
 
 ### Requisitos Cumplidos en la Colección
-* **84 peticiones en total** divididas en 7 carpetas en orden estricto:
+* **89 peticiones en total** divididas en 7 carpetas en orden estricto:
   1. `1. Salas`
   2. `2. Bandas`
   3. `3. Músicos`
   4. `4. Equipo`
   5. `5. Reservas`
   6. `6. Consultas` (los 42 requests con tests de status code y examples guardados)
-  7. `7. Errores` (13 casos con tests automatizados de códigos 400, 404 y 409)
-* **Cada petición cuenta con:** Nombre, descripción con status esperado, assertions en la pestaña Tests y un Example guardado con respuesta JSON realista.
-* **Environment:** Contiene `baseUrl` y variables dinámicas (`roomId`, `bandId`, `musicianId`, `equipmentId`, `bookingId`, `loanId`) que se sincronizan en cada creación.
+  7. `7. Errores` (5 peticiones de preparación de estado + 13 casos de error con tests estrictos de código de estado único 400, 404 o 409 y validación del mensaje de error real de la API)
+* **Cada petición cuenta con:** Nombre, descripción con status esperado, assertions en la pestaña Tests y un Example guardado con la respuesta HTTP real capturada contra el servidor Express y MongoDB Atlas (headers reales, ObjectIds reales y timestamps reales).
+* **Environment:** Contiene `baseUrl` y variables dinámicas (`roomId`, `bandId`, `musicianId`, `equipmentId`, `bookingId`, `loanId`, además de las variables auxiliares de preparación para la carpeta 7) que se sincronizan automáticamente al correr la colección en orden.
 
 ---
 
@@ -170,6 +170,9 @@ Los archivos exportados se encuentran en la carpeta [`postman/`](file:///postman
 
 * **¿Por qué usar transacciones con `startSession` y `withTransaction`?**
   Porque apartar una reserva implica escribir en `bookings`, en `loans` y decrementar inventario en `equipment`. Si el servidor se apaga a mitad del proceso o el inventario no alcanza, `withTransaction` garantiza que no queden reservas sin equipo ni inventario descontado sin reserva (propiedad de Atomicidad ACID).
+
+* **¿Qué pasa si llegan dos reservas simultáneas en el mismo milisegundo para la misma sala y horario?**
+  En MongoDB, las transacciones multi-documento utilizan aislamiento de instantánea (*Snapshot Isolation*). Como la validación de traslape hace una lectura (`Booking.findOne`) sobre documentos que aún no existen y luego un `insert`, si dos transacciones leen al mismo tiempo antes de que cualquiera haga commit, ninguna ve el documento de la otra (fenómeno conocido como *Write Skew* o *Phantom Read*) y ambas podrían insertarse si no tocan el mismo documento existente. Para serializarlas a nivel de motor de base de datos, se puede forzar un bloqueo de escritura (*Write Lock*) actualizando un campo en el documento padre `Room` dentro de la transacción (`Room.findByIdAndUpdate(roomId, { $set: { updatedAt: new Date() } }, { session })`), lo que provoca que MongoDB detecte un `WriteConflict` en la segunda transacción y la reintente después de que la primera haga commit (momento en el cual `Booking.findOne` ya detectará el traslape y devolverá 409).
 
 * **¿Por qué se usa `dns.setServers(['8.8.8.8', '1.1.1.1'])` en `db.js`?**
   MongoDB Atlas utiliza cadenas de conexión con protocolo `mongodb+srv://`, el cual depende de registros DNS de tipo SRV para balancear y descubrir los nodos del Replica Set. En Windows, la librería de resolución DNS nativa de Node.js (c-ares) puede presentar fallas con ciertos routers o proveedores de internet domésticos que bloquean o no resuelven registros SRV (`querySrv ECONNREFUSED`). Fijar servidores DNS públicos reconocidos como Google (8.8.8.8) y Cloudflare (1.1.1.1) asegura que el backend conecte sin importar la red o máquina donde se corra.
