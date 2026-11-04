@@ -3,7 +3,7 @@ const Band = require('../models/Band');
 const Musician = require('../models/Musician');
 const Booking = require('../models/Booking');
 
-// POST /api/bands
+// Registra una nueva banda musical en la base de datos
 const createBand = async (req, res, next) => {
   try {
     const { name, genre, active, contactName } = req.body;
@@ -14,7 +14,7 @@ const createBand = async (req, res, next) => {
   }
 };
 
-// GET /api/bands
+// Lista las bandas con paginación, ordenamiento y búsqueda por nombre
 const getBands = async (req, res, next) => {
   try {
     const { page, limit, skip, sort, searchFilter } = req.pagination;
@@ -40,7 +40,7 @@ const getBands = async (req, res, next) => {
   }
 };
 
-// GET /api/bands/:id (con músicos poblados)
+// Obtiene el detalle de una banda por su ID incluyendo sus músicos asociados
 const getBandById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -56,7 +56,7 @@ const getBandById = async (req, res, next) => {
   }
 };
 
-// PUT /api/bands/:id
+// Actualiza los datos de una banda existente por su ID
 const updateBand = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -77,17 +77,13 @@ const updateBand = async (req, res, next) => {
   }
 };
 
-// DELETE /api/bands/:id
-// Reglas:
-// 1. Borrar una banda con reservas apartada o confirmada responde 409
-// 2. Borrar una banda que todavía tiene músicos responde 409
+// Elimina una banda verificando que no tenga músicos ni reservas activas
 const deleteBand = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(404).json({ error: 'Banda no encontrada' });
     }
 
-    // Comprobar si tiene músicos
     const hasMusicians = await Musician.exists({ band: req.params.id });
     if (hasMusicians) {
       return res.status(409).json({
@@ -95,7 +91,6 @@ const deleteBand = async (req, res, next) => {
       });
     }
 
-    // Comprobar si tiene reservas activas
     const activeBooking = await Booking.exists({
       band: req.params.id,
       status: { $in: ['apartada', 'confirmada'] }
@@ -116,7 +111,7 @@ const deleteBand = async (req, res, next) => {
   }
 };
 
-// GET /api/bands/:id/musicians
+// Lista todos los músicos pertenecientes a una banda específica
 const getBandMusicians = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -133,8 +128,7 @@ const getBandMusicians = async (req, res, next) => {
   }
 };
 
-// GET /api/bands/:id/bookings
-// Las reservas de la banda incluyen la sala
+// Lista todas las reservas de una banda específica incluyendo los datos de la sala
 const getBandBookings = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

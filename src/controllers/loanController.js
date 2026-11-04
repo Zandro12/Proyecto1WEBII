@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Loan = require('../models/Loan');
 
-// GET /api/loans
-// El listado filtra por status, booking y equipment
+// Lista los préstamos de equipo con paginación y filtros por estado, reserva o equipo
 const getLoans = async (req, res, next) => {
   try {
     const { page, limit, skip, sort, searchFilter } = req.pagination;
@@ -48,8 +47,7 @@ const getLoans = async (req, res, next) => {
   }
 };
 
-// GET /api/loans/:id
-// El detalle trae la reserva y el equipo
+// Obtiene el detalle de un préstamo por su ID con la reserva y el equipo poblados
 const getLoanById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

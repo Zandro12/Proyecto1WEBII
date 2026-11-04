@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Musician = require('../models/Musician');
 const Band = require('../models/Band');
 
-// POST /api/musicians
+// Registra un nuevo músico validando que la banda asignada exista
 const createMusician = async (req, res, next) => {
   try {
     const { name, instrument, email, band, active } = req.body;
@@ -23,8 +23,7 @@ const createMusician = async (req, res, next) => {
   }
 };
 
-// GET /api/musicians
-// El listado filtra por band y por active
+// Lista los músicos con paginación, búsqueda y filtros por banda o estado activo
 const getMusicians = async (req, res, next) => {
   try {
     const { page, limit, skip, sort, searchFilter } = req.pagination;
@@ -66,7 +65,7 @@ const getMusicians = async (req, res, next) => {
   }
 };
 
-// GET /api/musicians/:id (muestra la banda)
+// Obtiene el detalle de un músico por su ID con su banda poblada
 const getMusicianById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -82,7 +81,7 @@ const getMusicianById = async (req, res, next) => {
   }
 };
 
-// PUT /api/musicians/:id
+// Actualiza los datos de un músico validando la banda si se modifica
 const updateMusician = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -115,7 +114,7 @@ const updateMusician = async (req, res, next) => {
   }
 };
 
-// DELETE /api/musicians/:id
+// Elimina un músico de la base de datos por su ID
 const deleteMusician = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

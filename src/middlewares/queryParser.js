@@ -1,9 +1,9 @@
-// Función auxiliar para escapar caracteres especiales en expresiones regulares
+// Escapa caracteres especiales de expresiones regulares en el texto de búsqueda
 const escapeRegex = (text) => {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
-// Configuración por recurso de ordenamiento permitido y orden por defecto
+// Configuración por recurso de campos de ordenamiento, orden por defecto y filtro de búsqueda
 const RESOURCE_CONFIG = {
   rooms: {
     allowedSorts: ['name', 'capacity', 'floor', 'createdAt'],
@@ -55,10 +55,7 @@ const RESOURCE_CONFIG = {
   }
 };
 
-/**
- * Middleware para validar y procesar page, limit, sort y search de forma estricta
- * @param {string} resourceName - 'rooms' | 'bands' | 'musicians' | 'bookings' | 'equipment' | 'loans'
- */
+// Valida y procesa los parámetros de consulta (page, limit, sort y search) según el recurso
 const parseQueryParams = (resourceName) => {
   return (req, res, next) => {
     const config = RESOURCE_CONFIG[resourceName];
@@ -70,7 +67,6 @@ const parseQueryParams = (resourceName) => {
     let limit = 10;
     let sort = { ...config.defaultSort };
 
-    // Validar parámetros duplicados (arreglos)
     if (Array.isArray(req.query.page)) {
       return res.status(400).json({ error: 'El parámetro page no puede enviarse múltiples veces' });
     }
@@ -84,7 +80,6 @@ const parseQueryParams = (resourceName) => {
       return res.status(400).json({ error: 'El parámetro search no puede enviarse múltiples veces' });
     }
 
-    // 1. Validar page
     if (req.query.page !== undefined) {
       const parsedPage = Number(req.query.page);
       if (!Number.isInteger(parsedPage) || parsedPage < 1) {
@@ -93,7 +88,6 @@ const parseQueryParams = (resourceName) => {
       page = parsedPage;
     }
 
-    // 2. Validar limit
     if (req.query.limit !== undefined) {
       const parsedLimit = Number(req.query.limit);
       if (!Number.isInteger(parsedLimit) || parsedLimit <= 0 || parsedLimit > 50) {
@@ -102,7 +96,6 @@ const parseQueryParams = (resourceName) => {
       limit = parsedLimit;
     }
 
-    // 3. Validar sort
     if (req.query.sort !== undefined) {
       if (typeof req.query.sort !== 'string') {
         return res.status(400).json({ error: 'El parámetro sort debe ser una cadena de texto' });
@@ -131,7 +124,6 @@ const parseQueryParams = (resourceName) => {
       }
     }
 
-    // 4. Validar search
     let searchFilter = {};
     if (req.query.search !== undefined) {
       if (typeof req.query.search !== 'string') {

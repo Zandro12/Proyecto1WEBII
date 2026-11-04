@@ -6,7 +6,7 @@ const Musician = require('../models/Musician');
 const Equipment = require('../models/Equipment');
 const Loan = require('../models/Loan');
 
-// Función auxiliar para obtener fecha actual en formato YYYY-MM-DD
+// Devuelve la fecha actual en formato YYYY-MM-DD
 const getTodayString = () => {
   const now = new Date();
   const year = now.getFullYear();
@@ -15,9 +15,8 @@ const getTodayString = () => {
   return `${year}-${month}-${day}`;
 };
 
-// Función auxiliar para validar reglas de negocio comunes de reserva
+// Valida horarios, fecha real en el calendario, disponibilidad de sala, cupo de la banda y traslapes
 const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, excludeBookingId = null, session = null }) => {
-  // 1. Validar horas
   if (typeof startHour !== 'number' || typeof endHour !== 'number') {
     const error = new Error('Las horas de inicio y fin deben ser numéricas');
     error.statusCode = 400;
@@ -36,7 +35,6 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // 2. Validar formato estricto y fecha válida en el calendario
   if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     const error = new Error('El formato de fecha debe ser YYYY-MM-DD');
     error.statusCode = 400;
@@ -59,7 +57,6 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // Validar fecha (hoy o posterior)
   const todayStr = getTodayString();
   if (date < todayStr) {
     const error = new Error('La fecha debe ser hoy o un día posterior');
@@ -67,7 +64,6 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // 3. Validar Sala
   if (!mongoose.Types.ObjectId.isValid(roomId)) {
     const error = new Error('El ID de sala no es válido');
     error.statusCode = 404;
@@ -90,7 +86,6 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // 4. Validar Banda
   if (!mongoose.Types.ObjectId.isValid(bandId)) {
     const error = new Error('El ID de banda no es válido');
     error.statusCode = 404;
@@ -113,7 +108,6 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // 5. Validar músicos activos de la banda
   const musicianCountQuery = Musician.countDocuments({ band: bandId, active: true });
   if (session) musicianCountQuery.session(session);
   const activeMusiciansCount = await musicianCountQuery;
@@ -132,8 +126,6 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
     throw error;
   }
 
-  // 6. Validar traslape
-  // Inicio pedido < Fin existente Y Fin pedido > Inicio existente
   const overlapCriteria = {
     room: roomId,
     date: date,
@@ -159,8 +151,7 @@ const validateBookingRules = async ({ roomId, bandId, date, startHour, endHour, 
   return { room, band, activeMusiciansCount };
 };
 
-// POST /api/bookings
-// Transacción multi-colección con startSession y withTransaction
+// Crea una reserva y sus préstamos descontando inventario dentro de una transacción ACID
 const createBooking = async (req, res, next) => {
   const session = await mongoose.startSession();
 
@@ -176,7 +167,6 @@ const createBooking = async (req, res, next) => {
         throw error;
       }
 
-      // Validar reglas de negocio dentro de la transacción
       await validateBookingRules({
         roomId: room,
         bandId: band,
@@ -186,14 +176,12 @@ const createBooking = async (req, res, next) => {
         session
       });
 
-      // Validar arreglo de equipo
       if (!Array.isArray(equipment)) {
         const error = new Error('El campo equipment debe ser un arreglo');
         error.statusCode = 400;
         throw error;
       }
 
-      // Verificar que no se repita el mismo equipo en múltiples líneas
       const equipmentIdsSeen = new Set();
       for (const item of equipment) {
         if (!item.equipmentId || !mongoose.Types.ObjectId.isValid(item.equipmentId)) {
@@ -218,7 +206,6 @@ const createBooking = async (req, res, next) => {
         }
       }
 
-      // Validar disponibilidad de inventario de cada equipo
       const equipmentDocsToUpdate = [];
       for (const item of equipment) {
         const eqDoc = await Equipment.findById(item.equipmentId).session(session);
@@ -239,7 +226,6 @@ const createBooking = async (req, res, next) => {
         equipmentDocsToUpdate.push({ doc: eqDoc, units: item.units });
       }
 
-      // Crear Booking dentro de la transacción
       const [newBooking] = await Booking.create(
         [
           {
@@ -255,7 +241,6 @@ const createBooking = async (req, res, next) => {
         { session }
       );
 
-      // Crear préstamos y descontar inventario con $inc
       const loansCreated = [];
       for (const item of equipmentDocsToUpdate) {
         const [loan] = await Loan.create(
@@ -271,7 +256,6 @@ const createBooking = async (req, res, next) => {
         );
         loansCreated.push(loan);
 
-        // Descontar availableUnits usando $inc dentro de la transacción
         await Equipment.findByIdAndUpdate(
           item.doc._id,
           { $inc: { availableUnits: -item.units } },
@@ -285,7 +269,6 @@ const createBooking = async (req, res, next) => {
       };
     });
 
-    // Respuesta una vez confirmada la transacción
     const populatedBooking = await Booking.findById(result.booking._id)
       .populate('room')
       .populate('band');
@@ -301,8 +284,7 @@ const createBooking = async (req, res, next) => {
   }
 };
 
-// GET /api/bookings
-// El listado filtra por status, room, band, date, from y to
+// Lista las reservas con paginación y filtros por estado, sala, banda y rango de fechas
 const getBookings = async (req, res, next) => {
   try {
     const { page, limit, skip, sort, searchFilter } = req.pagination;
@@ -358,8 +340,7 @@ const getBookings = async (req, res, next) => {
   }
 };
 
-// GET /api/bookings/stats (Aggregate)
-// Cuenta reservas por estado
+// Cuenta mediante agregación el total de reservas agrupadas por estado
 const getBookingsStats = async (req, res, next) => {
   try {
     const stats = await Booking.aggregate([
@@ -387,9 +368,7 @@ const getBookingsStats = async (req, res, next) => {
   }
 };
 
-// GET /api/bookings/:id
-// El detalle trae sala (name, capacity, status), banda (name, genre y sus músicos activos),
-// y préstamos (cada préstamo trae el equipo)
+// Obtiene el detalle de una reserva con sala, banda, músicos activos y préstamos de equipo
 const getBookingById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -404,7 +383,6 @@ const getBookingById = async (req, res, next) => {
       return res.status(404).json({ error: 'Reserva no encontrada' });
     }
 
-    // Obtener músicos activos de la banda
     let activeMusicians = [];
     if (booking.band) {
       activeMusicians = await Musician.find({
@@ -413,7 +391,6 @@ const getBookingById = async (req, res, next) => {
       }).select('name instrument email');
     }
 
-    // Obtener préstamos con equipo poblado
     const loans = await Loan.find({ booking: booking._id }).populate('equipment');
 
     const bookingObj = booking.toJSON();
@@ -428,13 +405,7 @@ const getBookingById = async (req, res, next) => {
   }
 };
 
-// PUT /api/bookings/:id
-// Actualizar horario, sala o banda vuelve a comprobar las reglas.
-// Cambiar el equipo de una reserva ya creada queda fuera del alcance.
-// Cambios de estado permitidos:
-// apartada pasa a confirmada o a cancelada;
-// confirmada pasa a cancelada;
-// cancelada se queda así.
+// Actualiza una reserva revalidando reglas de negocio y transiciones de estado permitidas
 const updateBooking = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -446,14 +417,12 @@ const updateBooking = async (req, res, next) => {
       return res.status(404).json({ error: 'Reserva no encontrada' });
     }
 
-    // Si ya está cancelada, no se puede modificar
     if (existingBooking.status === 'cancelada') {
       return res.status(409).json({ error: 'Una reserva cancelada no puede ser modificada' });
     }
 
     const { room, band, date, startHour, endHour, notes, status } = req.body;
 
-    // Validación de transición de estados
     if (status !== undefined && status !== existingBooking.status) {
       if (existingBooking.status === 'apartada') {
         if (status !== 'confirmada' && status !== 'cancelada') {
@@ -469,7 +438,6 @@ const updateBooking = async (req, res, next) => {
         }
       }
 
-      // Si el cambio de estado es a 'cancelada', debe realizarse mediante la lógica transaccional de cancelación
       if (status === 'cancelada') {
         req.params.id = existingBooking._id;
         return cancelBooking(req, res, next);
@@ -482,7 +450,6 @@ const updateBooking = async (req, res, next) => {
     const targetStartHour = startHour !== undefined ? startHour : existingBooking.startHour;
     const targetEndHour = endHour !== undefined ? endHour : existingBooking.endHour;
 
-    // Si se modifican campos críticos de la reserva, volver a validar reglas
     const needsRevalidation =
       room !== undefined ||
       band !== undefined ||
@@ -521,9 +488,7 @@ const updateBooking = async (req, res, next) => {
   }
 };
 
-// PATCH /api/bookings/:id/cancel
-// Transacción multi-colección con startSession y withTransaction
-// Al cancelar, el Booking pasa a cancelada, sus préstamos pasan a devuelto y las unidades regresan a availableUnits
+// Cancela una reserva y devuelve las unidades prestadas al inventario dentro de una transacción ACID
 const cancelBooking = async (req, res, next) => {
   const session = await mongoose.startSession();
 
@@ -550,17 +515,14 @@ const cancelBooking = async (req, res, next) => {
         throw error;
       }
 
-      // Cambiar estado de la reserva a cancelada
       booking.status = 'cancelada';
       await booking.save({ session });
 
-      // Buscar préstamos en estado prestado
       const activeLoans = await Loan.find({
         booking: booking._id,
         status: 'prestado'
       }).session(session);
 
-      // Devolver cada préstamo e incrementar availableUnits en Equipment con $inc
       for (const loan of activeLoans) {
         loan.status = 'devuelto';
         await loan.save({ session });

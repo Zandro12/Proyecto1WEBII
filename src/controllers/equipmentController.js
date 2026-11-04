@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const Equipment = require('../models/Equipment');
 
-// POST /api/equipment
+// Registra un nuevo equipo inicializando las unidades disponibles iguales al total
 const createEquipment = async (req, res, next) => {
   try {
     const { name, category, totalUnits } = req.body;
-    // availableUnits empieza igual a totalUnits
     const equipment = await Equipment.create({
       name,
       category,
@@ -18,8 +17,7 @@ const createEquipment = async (req, res, next) => {
   }
 };
 
-// GET /api/equipment
-// El listado filtra por category y por disponibles, con available=true cuando availableUnits es mayor que 0
+// Lista el inventario de equipos con paginación, búsqueda y filtros por categoría y disponibilidad
 const getEquipment = async (req, res, next) => {
   try {
     const { page, limit, skip, sort, searchFilter } = req.pagination;
@@ -57,8 +55,7 @@ const getEquipment = async (req, res, next) => {
   }
 };
 
-// GET /api/equipment/stats (Aggregate)
-// Devuelve, por categoría, las unidades totales y las disponibles
+// Calcula mediante agregación el total de unidades y disponibles agrupadas por categoría
 const getEquipmentStats = async (req, res, next) => {
   try {
     const stats = await Equipment.aggregate([
@@ -91,7 +88,7 @@ const getEquipmentStats = async (req, res, next) => {
   }
 };
 
-// GET /api/equipment/:id
+// Obtiene el detalle de un equipo específico por su ID
 const getEquipmentById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -107,9 +104,7 @@ const getEquipmentById = async (req, res, next) => {
   }
 };
 
-// PUT /api/equipment/:id
-// Regla: availableUnits no se modifica en un PUT directo al equipo. Cambia solo dentro de las transacciones.
-// Un PUT puede cambiar name, category y totalUnits. Si el nuevo totalUnits queda por debajo de las unidades prestadas, responde 409.
+// Actualiza nombre, categoría y total de unidades sin dejar el total por debajo de las unidades prestadas
 const updateEquipment = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -133,7 +128,6 @@ const updateEquipment = async (req, res, next) => {
         return res.status(400).json({ error: 'El total de unidades debe ser un número entero mayor que 0' });
       }
 
-      // Unidades prestadas actualmente
       const borrowedUnits = currentEquipment.totalUnits - currentEquipment.availableUnits;
       if (parsedTotal < borrowedUnits) {
         return res.status(409).json({
@@ -142,7 +136,6 @@ const updateEquipment = async (req, res, next) => {
       }
 
       updateData.totalUnits = parsedTotal;
-      // Ajustamos las disponibles según el nuevo total manteniendo la cantidad prestada intacta
       updateData.availableUnits = parsedTotal - borrowedUnits;
     }
 
@@ -158,8 +151,7 @@ const updateEquipment = async (req, res, next) => {
   }
 };
 
-// DELETE /api/equipment/:id
-// Regla: Borrar un equipo con availableUnits menor que totalUnits responde 409
+// Elimina un equipo verificando que no tenga unidades prestadas actualmente
 const deleteEquipment = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

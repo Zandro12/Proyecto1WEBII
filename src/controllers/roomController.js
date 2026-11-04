@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Room = require('../models/Room');
 const Booking = require('../models/Booking');
 
-// POST /api/rooms
+// Crea una nueva sala de ensayo en la base de datos
 const createRoom = async (req, res, next) => {
   try {
     const { name, capacity, floor, hasDrumKit, status } = req.body;
@@ -13,7 +13,7 @@ const createRoom = async (req, res, next) => {
   }
 };
 
-// GET /api/rooms
+// Lista las salas con paginación, ordenamiento y búsqueda por nombre
 const getRooms = async (req, res, next) => {
   try {
     const { page, limit, skip, sort, searchFilter } = req.pagination;
@@ -39,8 +39,7 @@ const getRooms = async (req, res, next) => {
   }
 };
 
-// GET /api/rooms/stats (Aggregate)
-// Devuelve, por sala, cuántas reservas activas tiene (apartada o confirmada)
+// Calcula mediante agregación cuántas reservas activas tiene cada sala
 const getRoomsStats = async (req, res, next) => {
   try {
     const stats = await Room.aggregate([
@@ -84,7 +83,7 @@ const getRoomsStats = async (req, res, next) => {
   }
 };
 
-// GET /api/rooms/:id
+// Obtiene el detalle de una sala específica por su ID
 const getRoomById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -100,7 +99,7 @@ const getRoomById = async (req, res, next) => {
   }
 };
 
-// PUT /api/rooms/:id
+// Actualiza los datos de una sala existente por su ID
 const updateRoom = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -121,8 +120,7 @@ const updateRoom = async (req, res, next) => {
   }
 };
 
-// DELETE /api/rooms/:id
-// Regla: Borrar una sala con reservas apartada o confirmada responde 409
+// Elimina una sala verificando que no tenga reservas apartadas o confirmadas
 const deleteRoom = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -148,8 +146,7 @@ const deleteRoom = async (req, res, next) => {
   }
 };
 
-// GET /api/rooms/:id/schedule?date=2026-11-02
-// El horario devuelve las reservas de ese día ordenadas por startHour, con la banda poblada
+// Obtiene las reservas activas de una sala en una fecha específica ordenadas por hora de inicio
 const getRoomSchedule = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
